@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        #app {
+            width: 300px;
+            height: 180px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="map='baidu'">btn</button>
+        <p v-text="map"></p>
+        <compa></compa>
+    </div>
+    <script>
+        var compa = {
+            data() {
+                return {
+                    map: ''
+                }
+            },
+            inject: ['getMap'],
+            template: '<div>this is compa<span v-text="map"></span><button @click="map=getMap">btn</button><compb></compb></div>',
+            components: {
+               'compb': {
+                data() {
+                    return {
+                        map: ''
+                    }
+                },
+                inject: ['getMap'],
+                template: '<div>this is compb<span v-text="map"></span><button @click="map=getMap">btn</button></div>'
+               }
+            }
+        }
+
+
+        new Vue({
+            el: '#app',
+            components: {
+                'compa': compa,
+            },
+            provide: function () {
+                return {
+                    getMap: this.getMap()
+                }
+            },
+            methods: {
+                getMap: function () {
+                    return this.map
+                }
+            },
+            data() {
+                return {
+                    map: 'google'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
